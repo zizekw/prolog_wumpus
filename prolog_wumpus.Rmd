@@ -24,7 +24,7 @@ Write an explanation of how each **rule** in the `Prolog` program works. Rule he
 father(X,Y) :- parent(X,Y), male(X).
 ```
 
-X is father of Y **if** X is a parent of Y **and** male.
+We can show X is the father of Y **if** X is a parent of Y **and** male.
 
 Further syntax explanations available online in Prolog books/tutorials. 
 
@@ -60,7 +60,7 @@ start :-
     take_steps([[1,1]]).
 ```
 
-`start` the game (no arguments) **if** the predicate `format` printing some text is successful with an empty list **and** the `init` functor can be called to set up the WumpusWorld (more on this below) with no arguments necessary **and** the predicate `format` printing some text is successful with an empty list **and** a fact called `take_steps` to modulate location (more on this below) is called using a list of lists to set us in the starting position 1,1.
+Here we can `start` the game (no arguments) **if** the predicate `format` printing some text is successful with an empty list **and** the `init` functor can be called to set up the WumpusWorld (more on this below) with no arguments necessary **and** the predicate `format` printing some text is successful with an empty list **and** a fact called `take_steps` to modulate location (more on this below) is called by supplying a list of lists to set us in the starting position 1,1.
 
 ```{r scheduling simulation}
 step_pre(VisitedList) :-
@@ -132,6 +132,12 @@ is_pit(no,  X) :-
 is_pit(yes, X) :-
     pit_location(X).
 ```
+
+Here we can `update_time` if we take the `time_taken` and update a `NewTime` by coercing an addition function. Then `retractall` removes existing facts within `time_taken` before we then update with the `NewTime`.  
+
+Here we can instantiate the `update_score` structure with no arguments if we can take the agent, gold, and wumpus location to compute update_score. 
+
+Here we can further `update_score` by supplying the argument P if we can take S and coerce the computation of an addition for a `NewScore`. As described we can then `retractall` and assert the `NewScore`. 
 
 ```{r display standings}
 standing :-
