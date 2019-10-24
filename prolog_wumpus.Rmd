@@ -133,11 +133,17 @@ is_pit(yes, X) :-
     pit_location(X).
 ```
 
-Here we can `update_time` if we take the `time_taken` and update a `NewTime` by coercing an addition function. Then `retractall` removes existing facts within `time_taken` before we then update with the `NewTime`.  
+In this code chunk, we are updating a lot of states.
+
+First, we can `update_time` if we take the `time_taken` and update a `NewTime` by coercing an addition function. Then `retractall` removes existing facts within `time_taken` before we then update with the `NewTime`.  
 
 Here we can instantiate the `update_score` structure with no arguments if we can take the agent, gold, and wumpus location to compute update_score. 
 
-Here we can further `update_score` by supplying the argument P if we can take S and coerce the computation of an addition for a `NewScore`. As described we can then `retractall` and assert the `NewScore`. 
+Here we can further `update_score` by supplying the argument P if we can take S and coerce the computation of an addition for a `NewScore`. As described, we can then `retractall` and assert the `NewScore`.
+
+We then `update_score`  few more times. Then we `update_agent_location` similar to how we updated the score.
+
+Finally, we determine if X is not a pit if we show X **does not** (\+ is a negation) equal the pit location. Then to determine if X is a pit you do the opposite.
 
 ```{r display standings}
 standing :-
@@ -163,6 +169,10 @@ stnd(AL, AL, _) :-
     true.
 ```
 
+We are simply displaying the standings here.
+
+First, we can instantiate the standings if we can obtain the wumpus, gold, and agent location. We defined `is_pit` and if the answer is yes then the standings are updating and we render some text to the console communicating as such. The game is over. Otherwise if it is infact not a pit, then we present the standings and carry on. The structure for `stnd` can hold 3 arguments for the agent, wumpus, and gold location respectively. A single underscore denotes any term for an argument. Next we define some standings updates that if based on the agent location there's nothing exciting that we have to carry on. Similarly if we find the wumpus, it's game over and we render text to the console as such. Finally, if we find the gold then we win. 
+
 ```{r perception}
 make_perception([_Stench,_Bleeze,_Glitter]) :-
     agent_location(AL),
@@ -179,6 +189,14 @@ make_percept_sentence([Stench,Bleeze,Glitter]) :-
 	bleezy(Bleeze),
 	glittering(Glitter).
 ```
+
+This chunk is all about perception.
+
+First, we can `make_perception`if we have the agent location and then based on that can tell if it's stinky (wumpus!!), if it's breezy (pit nearby!!), or if there's glittering (gold!!). All of these perceptions are critical to decision making to optimize winning over losing.
+
+Then, we can `test_perception` if we take the perception sentence we are about to define below and render an appropriate sentence to the console.
+
+Finally, we can make an appropriate perception sentence respectively using a list of perception arguments to indicate the wumpus, a pit, or gold.
 
 ```{r initializing}
 init :-
@@ -230,6 +248,20 @@ visit(Xs) :-
     retractall( visited_cells(_) ),
     assert( visited_cells([Ys|Xs]) ).
 ```
+
+This chunk is all about initializing the environment.
+
+We can `init` if we can successfully `init_game`, `init_land_fig72`, `init_agent`, and `init_wumpus.`
+
+We `init_game` by wiping all environment variables. We retract existing time, score, visited locations, and game end-points. Then we `assert` a respective starting value.
+
+# TODO:
+
+# `init_land_fig72`
+
+# `init_agent`
+ 
+# `init_wumpus.`
 
 ```{r Perceptors}
 %%% Institiation error!!!
