@@ -13,7 +13,7 @@
 
 <meta name="author" content="Bill Zizek" />
 
-<meta name="date" content="2019-10-24" />
+<meta name="date" content="2019-10-29" />
 
 <title>SCS 3547 - Intelligent Agents &amp; Reinforcement Learning</title>
 
@@ -135,7 +135,7 @@ code span.ot { color: #007020; }
 <div class="inner">
 <h1 class="title toc-ignore">SCS 3547 - Intelligent Agents &amp; Reinforcement Learning</h1>
 <h3 class="author">Bill Zizek</h3>
-<h3 class="date">2019-10-24</h3>
+<h3 class="date">2019-10-29</h3>
 </div>
 </header>
 
@@ -341,20 +341,10 @@ code span.ot { color: #007020; }
 <p>This chunk is all about initializing the environment.</p>
 <p>We can <code>init</code> if we can successfully <code>init_game</code>, <code>init_land_fig72</code>, <code>init_agent</code>, and <code>init_wumpus.</code></p>
 <p>We <code>init_game</code> by wiping all environment variables. We retract existing time, score, visited locations, and game end-points. Then we <code>assert</code> a respective starting value.</p>
-</div>
-</div>
-</div>
-<div id="todo" class="section level1">
-<h1>TODO:</h1>
-</div>
-<div id="init_land_fig72" class="section level1">
-<h1><code>init_land_fig72</code></h1>
-</div>
-<div id="init_agent" class="section level1">
-<h1><code>init_agent</code></h1>
-</div>
-<div id="init_wumpus." class="section level1">
-<h1><code>init_wumpus.</code></h1>
+<p>We are configuring the board a bit here. We can <code>init_land_fig72</code> if we can <code>retractall</code> and set the <code>world_size</code>. Similarly as described, we wipe and set the gold location and pit locations.</p>
+<p>As described above, we can <code>init_agent</code> if we <code>retractall</code> on the location of the agent and then assert the location as the starting point [1,1].</p>
+<p>As above, we <code>init_wumpus</code> similar to the agent by <code>retractall</code> the location and asserting the starting point [4,1].</p>
+<p>We can record the visited places by supplying the X values of the grid if we also supply the visited Y values of the grid and then wipe the visited location and then asserting the visited cells for the Y and X values.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="op">%%</span>% Institiation error<span class="op">!!!</span></a>
 <a class="sourceLine" id="cb9-2" title="2"></a>
 <a class="sourceLine" id="cb9-3" title="3">%<span class="kw">adj</span>(X,Y) <span class="op">:-</span></a>
@@ -408,6 +398,13 @@ code span.ot { color: #007020; }
 <a class="sourceLine" id="cb9-51" title="51"><span class="st">    </span><span class="kw">agent_location</span>(AL),</a>
 <a class="sourceLine" id="cb9-52" title="52">    <span class="kw">isGlittering</span>(AL).</a>
 <a class="sourceLine" id="cb9-53" title="53"><span class="kw">glittering</span>(no).</a></code></pre></div>
+<p>This code chunk is all about the agent’s perceptions of the environment around.</p>
+<p><code>%</code> indicates a comment in Prolog so we have some commented out code chunks to begin with.</p>
+</div>
+</div>
+</div>
+<div id="todo-everything-else-in-here" class="section level1">
+<h1>TODO: everything else in here</h1>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">update_KB</span>( [Stench,Bleeze,Glitter] ) <span class="op">:-</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="st">    </span><span class="kw">add_wumpus_KB</span>(Stench),</a>
 <a class="sourceLine" id="cb10-3" title="3">    <span class="kw">add_pit_KB</span>(Bleeze),</a>

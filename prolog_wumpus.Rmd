@@ -255,13 +255,13 @@ We can `init` if we can successfully `init_game`, `init_land_fig72`, `init_agent
 
 We `init_game` by wiping all environment variables. We retract existing time, score, visited locations, and game end-points. Then we `assert` a respective starting value.
 
-# TODO:
+We are configuring the board a bit here. We can `init_land_fig72` if we can `retractall` and set the `world_size`. Similarly as described, we wipe and set the gold location and pit locations.
 
-# `init_land_fig72`
-
-# `init_agent`
+As described above, we can `init_agent` if we `retractall` on the location of the agent and then assert the location as the starting point [1,1].
  
-# `init_wumpus.`
+As above, we `init_wumpus` similar to the agent by `retractall` the location and asserting the starting point [4,1].
+
+We can record the visited places by supplying the X values of the grid if we also supply the visited Y values of the grid and then wipe the visited location and then asserting the visited cells for the Y and X values. 
 
 ```{r Perceptors}
 %%% Institiation error!!!
@@ -318,6 +318,12 @@ glittering(yes) :-
     isGlittering(AL).
 glittering(no).
 ```
+
+This code chunk is all about the agent's perceptions of the environment around.
+
+`%` indicates a comment in Prolog so we have some commented out code chunks to begin with.
+
+# TODO: everything else in here
 
 ```{r knowledge base}
 update_KB( [Stench,Bleeze,Glitter] ) :-
