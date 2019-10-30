@@ -323,7 +323,17 @@ This code chunk is all about the agent's perceptions of the environment around.
 
 `%` indicates a comment in Prolog so we have some commented out code chunks to begin with.
 
-# TODO: everything else in here
+Next we are stating several facts using `adj(_,_)`. What we are defining here is that two integers (of either X or Y dimension) are adjacent to each other. 
+
+Then, we define a rule where given [X1, Y1] and [X2, Y2], they are `adjacent` if we can show they are on the same column + their Y's are `adj` *or* that they are on the same row + and their X's are `adj`.
+
+Next we are perceiving if the wumpus is nearby by `isSmelly` if we supply `Ls1` and can show the wumpus location `Ls2` is adjacent. 
+
+We next do the same as above for a pit judging if it `isBleezy` (likely a typo for breezy).
+
+The previous two rules were different in that we are perceiving something adjacent to the location. For glittering, this is only perceived if gold is **in** the square. Therefore, we can show `isGlittering` by supplying [X1,Y1] with the gold location [X2,Y2] and equating the locations to each other. 
+
+We finish off this code chunk by supplying yes/no logic for each perception. Essentially we can render `yes` for a perceiption if we can show that the agent location corresponds with the conditions for the perceptions of scent, breeze, and glitter.
 
 ```{r knowledge base}
 update_KB( [Stench,Bleeze,Glitter] ) :-
@@ -417,6 +427,24 @@ ask_KB(VisitedList, Action) :-
     Action = L.
 ```
 
+Finally, we come to define our knowledge base (KB) for the Wumpus World. We are building up our KB to make appropriate decisions.
+
+We begin with a general `update_KB` rule to update if there is a relevant outcome pertaining to the wumpus, a pit, or the gold. This will be further defined in subsequent rules when there is a pertinent update to add to the agent's KB.
+
+`add_wumpus_KB` with the argument `no` is the case if it is proven that the agent location [X,Y] is not the wumpus +/- 1 space across the agent's current X,Y dimensions. We will define `assume_wumpus` rule below.
+
+Similarly, we do not `add_pit_KB` from supplying the `agent_location`'s [X,Y] +/- across X and Y and the return from `assume_pit` comes back as `no`. We define `assume_pit` below. In contrast, we define do `add_pit_KB` if `yes` is returned by `assume_pit` similarly checking +/- across X and Y from the agents location. 
+
+We `add_gold_KB` if we can show the [X,Y] location of the gold is equivalent to that of the agents location. In that case, we `assume_gold`.
+
+We will now define a few `assume_` rules to supplement growing our KB. These rules are intended to assert a perception of the environment and render the situation to the console. We `assume_wumpus` if we supply `no` and the location `L` and then print that the knowledge base has learned there is no wumpus! 
+
+We repeat the above `assume_` rules for yes/no for the wumpus, the pit, and gold. Simiarly in each case, we are helping grow our KB alongside the `add_<variable>_KB` rules we defined earlier.
+
+We define if a move is `permitted` by supplying the [X,Y] and showing that the X/Y values are greater than 0 and less than the world size `WS` + 1. 
+
+Finally, we define the rule for `ask_KB` where we supply the `VisitedList` and `Action` if we can ask the knowledgebase if there is a wumpus/pit in a certain location and if the move is permitted then we update the agent location with the provided action.
+
 ```{r utils}
 not_member(_, []).
 not_member([X,Y], [[U,V]|Ys]) :-
@@ -425,3 +453,4 @@ not_member([X,Y], [[U,V]|Ys]) :-
     ).
 ```
 
+# TODO

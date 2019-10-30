@@ -13,7 +13,7 @@
 
 <meta name="author" content="Bill Zizek" />
 
-<meta name="date" content="2019-10-29" />
+<meta name="date" content="2019-10-30" />
 
 <title>SCS 3547 - Intelligent Agents &amp; Reinforcement Learning</title>
 
@@ -135,7 +135,7 @@ code span.ot { color: #007020; }
 <div class="inner">
 <h1 class="title toc-ignore">SCS 3547 - Intelligent Agents &amp; Reinforcement Learning</h1>
 <h3 class="author">Bill Zizek</h3>
-<h3 class="date">2019-10-29</h3>
+<h3 class="date">2019-10-30</h3>
 </div>
 </header>
 
@@ -400,11 +400,12 @@ code span.ot { color: #007020; }
 <a class="sourceLine" id="cb9-53" title="53"><span class="kw">glittering</span>(no).</a></code></pre></div>
 <p>This code chunk is all about the agent’s perceptions of the environment around.</p>
 <p><code>%</code> indicates a comment in Prolog so we have some commented out code chunks to begin with.</p>
-</div>
-</div>
-</div>
-<div id="todo-everything-else-in-here" class="section level1">
-<h1>TODO: everything else in here</h1>
+<p>Next we are stating several facts using <code>adj(_,_)</code>. What we are defining here is that two integers (of either X or Y dimension) are adjacent to each other.</p>
+<p>Then, we define a rule where given [X1, Y1] and [X2, Y2], they are <code>adjacent</code> if we can show they are on the same column + their Y’s are <code>adj</code> <em>or</em> that they are on the same row + and their X’s are <code>adj</code>.</p>
+<p>Next we are perceiving if the wumpus is nearby by <code>isSmelly</code> if we supply <code>Ls1</code> and can show the wumpus location <code>Ls2</code> is adjacent.</p>
+<p>We next do the same as above for a pit judging if it <code>isBleezy</code> (likely a typo for breezy).</p>
+<p>The previous two rules were different in that we are perceiving something adjacent to the location. For glittering, this is only perceived if gold is <strong>in</strong> the square. Therefore, we can show <code>isGlittering</code> by supplying [X1,Y1] with the gold location [X2,Y2] and equating the locations to each other.</p>
+<p>We finish off this code chunk by supplying yes/no logic for each perception. Essentially we can render <code>yes</code> for a perceiption if we can show that the agent location corresponds with the conditions for the perceptions of scent, breeze, and glitter.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">update_KB</span>( [Stench,Bleeze,Glitter] ) <span class="op">:-</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="st">    </span><span class="kw">add_wumpus_KB</span>(Stench),</a>
 <a class="sourceLine" id="cb10-3" title="3">    <span class="kw">add_pit_KB</span>(Bleeze),</a>
@@ -494,11 +495,25 @@ code span.ot { color: #007020; }
 <a class="sourceLine" id="cb10-87" title="87">    <span class="kw">not_member</span>(L, VisitedList),</a>
 <a class="sourceLine" id="cb10-88" title="88">    <span class="kw">update_agent_location</span>(L),</a>
 <a class="sourceLine" id="cb10-89" title="89">    Action =<span class="st"> </span>L.</a></code></pre></div>
+<p>Finally, we come to define our knowledge base (KB) for the Wumpus World. We are building up our KB to make appropriate decisions.</p>
+<p>We begin with a general <code>update_KB</code> rule to update if there is a relevant outcome pertaining to the wumpus, a pit, or the gold. This will be further defined in subsequent rules when there is a pertinent update to add to the agent’s KB.</p>
+<p><code>add_wumpus_KB</code> with the argument <code>no</code> is the case if it is proven that the agent location [X,Y] is not the wumpus +/- 1 space across the agent’s current X,Y dimensions. We will define <code>assume_wumpus</code> rule below.</p>
+<p>Similarly, we do not <code>add_pit_KB</code> from supplying the <code>agent_location</code>’s [X,Y] +/- across X and Y and the return from <code>assume_pit</code> comes back as <code>no</code>. We define <code>assume_pit</code> below. In contrast, we define do <code>add_pit_KB</code> if <code>yes</code> is returned by <code>assume_pit</code> similarly checking +/- across X and Y from the agents location.</p>
+<p>We <code>add_gold_KB</code> if we can show the [X,Y] location of the gold is equivalent to that of the agents location. In that case, we <code>assume_gold</code>.</p>
+<p>We will now define a few <code>assume_</code> rules to supplement growing our KB. These rules are intended to assert a perception of the environment and render the situation to the console. We <code>assume_wumpus</code> if we supply <code>no</code> and the location <code>L</code> and then print that the knowledge base has learned there is no wumpus!</p>
+<p>We repeat the above <code>assume_</code> rules for yes/no for the wumpus, the pit, and gold. Simiarly in each case, we are helping grow our KB alongside the <code>add_&lt;variable&gt;_KB</code> rules we defined earlier.</p>
+<p>We define if a move is <code>permitted</code> by supplying the [X,Y] and showing that the X/Y values are greater than 0 and less than the world size <code>WS</code> + 1.</p>
+<p>Finally, we define the rule for <code>ask_KB</code> where we supply the <code>VisitedList</code> and <code>Action</code> if we can ask the knowledgebase if there is a wumpus/pit in a certain location and if the move is permitted then we update the agent location with the provided action.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">not_member</span>(_, []).</a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw">not_member</span>([X,Y], [[U,V]<span class="op">|</span>Ys]) <span class="op">:-</span></a>
 <a class="sourceLine" id="cb11-3" title="3"><span class="st">    </span>( <span class="dt">X=</span>U,<span class="dt">Y=</span>V -&gt;<span class="st"> </span>fail</a>
 <a class="sourceLine" id="cb11-4" title="4">    ; <span class="kw">not_member</span>([X,Y], Ys)</a>
 <a class="sourceLine" id="cb11-5" title="5">    ).</a></code></pre></div>
+</div>
+</div>
+</div>
+<div id="todo" class="section level1">
+<h1>TODO</h1>
 </div>
     </section>
   </div>
