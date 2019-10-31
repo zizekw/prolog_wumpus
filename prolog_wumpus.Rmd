@@ -453,4 +453,4 @@ not_member([X,Y], [[U,V]|Ys]) :-
     ).
 ```
 
-# TODO
+`not_member` is part of `ask_KB` wherein we use this recursive routine to break apart the list. We can exit recursion if everything is considered not a member. 
